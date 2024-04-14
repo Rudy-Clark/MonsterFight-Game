@@ -11,9 +11,6 @@ public:
 	int getHealth() const;
 	int getGold() const;
 
-
-
-
 private:
 	std::string m_name{};
 	char m_symbol{};
