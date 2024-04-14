@@ -24,6 +24,11 @@ int Creature::getGold() const
     return m_gold;
 }
 
+char Creature::getSymbol() const
+{
+    return m_symbol;
+}
+
 bool Creature::isDead() const
 {
     return m_health <= 0;

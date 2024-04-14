@@ -10,8 +10,9 @@ public:
 	const std::string& getName() const;
 	int getHealth() const;
 	int getGold() const;
+	char getSymbol() const;
 
-	bool isDead() const;	void addGold(int amount);	void reduceHealth(int amount); private:
+	bool isDead() const;	void addGold(int amount);	void reduceHealth(int amount); protected:
 	std::string m_name{};
 	char m_symbol{};
 	int m_health{};
