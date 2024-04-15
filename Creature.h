@@ -11,6 +11,7 @@ public:
 	int getHealth() const;
 	int getGold() const;
 	char getSymbol() const;
+	int getDamage() const;
 
 	bool isDead() const;
 	void addGold(int amount);

@@ -29,6 +29,11 @@ char Creature::getSymbol() const
     return m_symbol;
 }
 
+int Creature::getDamage() const
+{
+    return m_damage;
+}
+
 bool Creature::isDead() const
 {
     return m_health <= 0;
