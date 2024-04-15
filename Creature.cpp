@@ -1,10 +1,10 @@
 #include "Creature.h"
 
-Creature::Creature(std::string_view name, char symbol, int health, int attackPower, int gold)
+Creature::Creature(std::string_view name, char symbol, int health, int damage, int gold)
     : m_name{name}
     , m_symbol{symbol}
     , m_health{health}
-    , m_attackPower{attackPower}
+    , m_damage{damage}
     , m_gold{gold}
 {
 }
