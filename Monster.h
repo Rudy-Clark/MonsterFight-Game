@@ -18,6 +18,8 @@ public:
 
 	explicit Monster(Type type);
 
+	static Monster getRandomMonster();
+
 private:
 	inline static std::array m_monsterData{
 		Creature{"dragon", 'D', 20, 4, 100 },
