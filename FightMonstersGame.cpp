@@ -2,12 +2,25 @@
 // Author Rudy Clark
 
 #include <iostream>
-#include "Creature.h"
+#include "Player.h"
+#include "Monster.h"
 
 int main()
 {
-	Creature o{ "orc", 'o', 4, 2, 10 };
-	o.addGold(5);
-	o.reduceHealth(1);
-	std::cout << "The " << o.getName() << " has " << o.getHealth() << " health and is carrying " << o.getGold() << " gold.\n";
+	/*Creature player{ "orc", 'player', 4, 2, 10 };
+	player.addGold(5);
+	player.reduceHealth(1);
+	std::cout << "The " << player.getName() << " has " << player.getHealth() << " health and is carrying " << player.getGold() << " gold.\n";*/
+
+	/*std::string playerName{};
+	std::cout << "Enter your name: ";
+	std::cin >> playerName;
+	std::cout << '\n';
+
+	Player player{ playerName };
+	std::cout << "The " << player.getName() << " has " << player.getHealth() << " health and is carrying " << player.getGold() << " gold.\n";*/
+	
+	Monster m{ Monster::Type::orc };
+	std::cout << "A " << m.getName() << " (" << m.getSymbol() << ") was created.\n";
+	
 }
