@@ -16,7 +16,7 @@ char getUserAction() {
 		char action{};
 		std::cin >> action;
 
-		if (action == 'r' || action == 'f' || action == 'R' || action == 'F') {
+		if (isRun(action) || isFight(action)) {
 			return action;
 		}
 		else
@@ -25,7 +25,7 @@ char getUserAction() {
 			{
 				exit(0); // shut down the program now
 			}
-
+			std::cout << "Wrong character, please enter 'r' or 'f'!\n";
 			// yep, so let's handle the failure
 			std::cin.clear();
 		}
@@ -45,34 +45,32 @@ void fightMonster(Player& player, Monster& monster)
 {
 	while (!monster.isDead() && !player.isDead()) {
 		std::cout << "(R)un or (F)ight:";
-		char action{ getUserAction() };
 
-		if (isFight(action))
+		if (isFight(getUserAction()))
 		{
 			attackMonster(player, monster);
 			std::cout << "You hit the " << monster.getName() << " for " << player.getDamage() << " damage.\n";
-			if (monster.isDead()) {
-				player.levelUp();
-				player.addGold(monster.getGold());
-
-				std::cout << "You killed the " << monster.getName() << "\n";
-				std::cout << "You found " << monster.getGold() << " gold. \n";
+		}
+		else
+		{
+			if (isEscaped()) {
+				std::cout << "You succefully fled!\n";
+				break;
 			}
+		}
+
+		if (!monster.isDead()) 
+		{
 			attackPlayer(monster, player);
 			std::cout << "The " << monster.getName() << " hit you for " << monster.getDamage() << " damage.\n";
 		}
 		else
 		{
-			bool escaped{ isEscaped() };
-			if (escaped) {
-				monster.reduceHealth(monster.getHealth());
-				std::cout << "You succefully fled!\n";
-			}
-			else {
-				attackPlayer(monster, player);
-				std::cout << "The " << monster.getName() << " hit you for " << monster.getDamage() << " damage.\n";
-			}
-			
+			player.levelUp();
+			player.addGold(monster.getGold());
+
+			std::cout << "You killed the " << monster.getName() << "\n";
+			std::cout << "You found " << monster.getGold() << " gold. \n";
 		}
 	}
 	
@@ -113,8 +111,21 @@ int main()
 		Monster monster{ Monster::getRandomMonster() };
 		std::cout << "You have encountered a " << monster.getName() << " (" << monster.getSymbol() << ")\n";
 		fightMonster(player, monster);
+
+		if (player.hasWon()) {
+			std::cout << "You reached level 20 and won game!!!\n";
+			std::cout << "You collected " << player.getGold() << " gold.\n";
+			break;
+		}
 	}
 
+	if (player.isDead()) {
+		//You died at level 3 and with 35 gold.
+		//Too bad you can’t take it with you!
+		
+		std::cout << "You died at level " << player.getLevel() << " and with " << player.getGold() << " gold.\n";
+		std::cout << "Too bad you can't take it with you!\n";
+	}
 	
 	return 0;
 }
