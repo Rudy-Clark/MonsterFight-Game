@@ -130,14 +130,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="FightMonstersGame.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Potion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Creature.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Potion.h" />
     <ClInclude Include="Random.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
