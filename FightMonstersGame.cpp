@@ -2,21 +2,30 @@
 // Author Rudy Clark
 
 #include <iostream>
+#include <functional>
 #include "Player.h"
 #include "Monster.h"
 #include "Random.h"
-#include <numbers>
+#include "Potion.h"
 
 inline bool isFight(char c) { return (c == 'f' || c == 'F'); }
 inline bool isRun(char c) { return (c == 'r' || c == 'R'); }
-inline bool isEscaped() { return Random::get(0, 100) >= 50; }
+inline bool checkIsFR(char c) { return (isFight(c) || isRun(c)); }
 
-char getUserAction() {
+inline bool isYes(char c) { return (c == 'Y' || c == 'y'); }
+inline bool isNo(char c) { return (c == 'N' || c == 'n'); }
+inline bool checkIsYN(char c) { return (isYes(c) || isNo(c)); }
+
+inline bool isEscaped() { return Random::get(0, 100) >= 50; }
+inline bool isPotionFound() { return Random::get(0, 100) >= 70; }
+
+template<typename T>
+char getUserAction(const std::function<bool(T)>& f) {
 	while (true) {
 		char action{};
 		std::cin >> action;
 
-		if (isRun(action) || isFight(action)) {
+		if (f(action)) {
 			return action;
 		}
 		else
@@ -36,6 +45,7 @@ void attackMonster(const Player& player, Monster& monster)
 {
 	monster.reduceHealth(player.getDamage());
 }
+
 void attackPlayer(const Monster& monster, Player& player)
 {
 	player.reduceHealth(monster.getDamage());
@@ -46,13 +56,14 @@ void fightMonster(Player& player, Monster& monster)
 	while (!monster.isDead() && !player.isDead()) {
 		std::cout << "(R)un or (F)ight:";
 
-		if (isFight(getUserAction()))
+		if (isFight(getUserAction<char>(checkIsFR)))
 		{
 			attackMonster(player, monster);
 			std::cout << "You hit the " << monster.getName() << " for " << player.getDamage() << " damage.\n";
 		}
 		else
 		{
+			// let's try to escape.
 			if (isEscaped()) {
 				std::cout << "You succefully fled!\n";
 				break;
@@ -73,7 +84,6 @@ void fightMonster(Player& player, Monster& monster)
 			std::cout << "You found " << monster.getGold() << " gold. \n";
 		}
 	}
-	
 }
 
 int main()
@@ -112,20 +122,38 @@ int main()
 		std::cout << "You have encountered a " << monster.getName() << " (" << monster.getSymbol() << ")\n";
 		fightMonster(player, monster);
 
-		if (player.hasWon()) {
+		if (player.hasWon()) 
+		{
 			std::cout << "You reached level 20 and won game!!!\n";
 			std::cout << "You collected " << player.getGold() << " gold.\n";
 			break;
 		}
+
+		// end of the fight, let's check did player found potion
+		if (isPotionFound() && !player.isDead()) 
+		{
+			std::cout << "You found a mythical potion! Do you want to drink it? [y/n]: ";
+
+			if (char potionFoundAction{ getUserAction<char>(checkIsYN) }; isYes(potionFoundAction)) 
+			{
+				Potion potion{ Potion::getRandomPotion() };
+				player.drankPotion(potion);
+				std::cout << "You drank a " << potion.getSize() << " potion of " << potion.getName();
+			}
+		}
 	}
 
 	if (player.isDead()) {
-		//You died at level 3 and with 35 gold.
-		//Too bad you can’t take it with you!
-		
 		std::cout << "You died at level " << player.getLevel() << " and with " << player.getGold() << " gold.\n";
 		std::cout << "Too bad you can't take it with you!\n";
 	}
+
+	// Let's test our generator
+	/*for (size_t i{}; i < 10; ++i) {
+		Potion potion{ Potion::getRandomPotion() };
+		std::cout << i + 1 << ". Generated " << potion.getSize() << " potion of the " << potion.getName() << "\n";
+	}*/
+
 	
 	return 0;
 }
