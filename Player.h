@@ -1,5 +1,7 @@
 #pragma once
+
 #include "Creature.h"
+#include "Potion.h"
 #include <string>
 
 
@@ -12,6 +14,8 @@ public:
 
 	void levelUp();
 	bool hasWon() const;
+
+	void drankPotion(const Potion& potion);
 
 private:
 	int m_level{};

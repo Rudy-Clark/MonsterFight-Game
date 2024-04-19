@@ -22,3 +22,14 @@ bool Player::hasWon() const
 {
 	return m_level == 20;
 }
+
+void Player::drankPotion(const Potion& potion)
+{
+	const Effect& effect{ potion.getEffect() };
+
+	m_damage += effect.getStrength();
+	m_health += effect.getHealth();
+	m_health += effect.getPoison();
+
+	
+}
